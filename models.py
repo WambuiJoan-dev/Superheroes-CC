@@ -1,6 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import validates
 from sqlalchemy_serializer import SerializerMixin
+from app import db
+
 
 class Hero(db.Model, SerializerMixin):
     __tablename__='heroes'
@@ -24,8 +26,9 @@ class Power(db.Model, SerializerMixin):
 class HeroPower(db.Model, SerializerMixin):
     __tablename__='hero_powers'
 
-    id = db.Column(dB.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     strength = db.Column(db.String, nullable=False)
     hero_id = db.Column(db.Integer, db.ForeignKey(heroes.id), nullable=False)
     power_id = db.Column(db.Integer, db.ForeignKey(powers.id), nullable=False)
 
+    serialize_rules = ('-hero.hero_powers', '-power.hero_powers')
